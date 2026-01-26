@@ -33,9 +33,4 @@ const updateTask = (taskId, data) => {
   });
 };
 
-updateTask(1, { status: "done" });
-updateTask(2, { title: "Build Backend API", priority: "high" });
-
-console.log(tasks);
-
 export { updateTask };

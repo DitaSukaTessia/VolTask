@@ -32,10 +32,6 @@ const addTask = (title, priority, status) => {
   return task;
 };
 
-addTask("Design UI", "", "pending");
-addTask("Build API", "", "blocked");
-addTask("Deploy app", "", "blocked");
-
 console.log(tasks);
 
 export { tasks, addTask };
