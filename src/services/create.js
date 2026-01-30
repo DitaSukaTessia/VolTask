@@ -5,7 +5,11 @@ const addTask = (title, priority, status) => {
     throw new Error("Title is required");
   }
 
-  priority = priority || "medium";
+  const priorities = ["low", "medium", "high"];
+  priority = priority ?? "medium";
+  if (!priorities.includes(priority)) {
+    throw new Error("Invalid priority");
+  }
 
   const statuses = ["pending", "active", "done", "blocked"];
   status = status ?? "pending";

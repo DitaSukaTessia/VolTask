@@ -1,9 +1,14 @@
-const http = require("http");
+import express from "express";
+import { createTaskController } from "./controllers/createTaskController.js";
+import { getTaskByIdController } from "./controllers/getTaskCotroller.js";
+import { getAllTasksController } from "./controllers/getTaskCotroller.js";
 
-const server = http.createServer((req, res) => {
-  res.writeHead(200, { "Content-Type": "text/plain" });
-  res.end("Hello, Fuckin Bitch!\n");
-});
+const server = express();
+server.use(express.json());
+
+server.post("/tasks", createTaskController);
+server.get("/tasks", getAllTasksController);
+server.get("/tasks/:id", getTaskByIdController);
 
 server.listen(3000, () => {
   console.log("Server running at http://localhost:3000/");
