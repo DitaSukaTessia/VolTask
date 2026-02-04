@@ -5,7 +5,7 @@ const getAllTasksController = (req, res) => {
     const allTasks = getAllTasks();
     res.status(200).json({ allTasks });
   } catch (error) {
-    res.status(404).json({ error: "Failed to retrieve tasks" });
+    next(err);
   }
 };
 
@@ -19,7 +19,7 @@ const getTaskByIdController = (req, res) => {
     const task = getTaskById(id);
     res.status(200).json({ task });
   } catch (error) {
-    res.status(404).json({ error: error.message });
+    next(err);
   }
 };
 

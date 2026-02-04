@@ -11,7 +11,7 @@ const deleteTaskController = (req, res) => {
     res.status(200).json({ deletedTask });
     res.status(200).json({ message: "Task deleted successfully" });
   } catch (error) {
-    res.status(404).json({ error: error.message });
+    next(err);
   }
 };
 

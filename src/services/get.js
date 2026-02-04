@@ -7,7 +7,9 @@ const getAllTasks = () => {
 const getTaskById = (taskId) => {
   const task = tasks.find((task) => task.id === taskId);
   if (!task) {
-    throw new Error("Task not found!");
+    const error = new Error("Task not found!");
+    error.statusCode = 404; // Not Found
+    throw error;
   }
   return task;
 };

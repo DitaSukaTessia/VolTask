@@ -12,7 +12,7 @@ const updateTaskController = (req, res) => {
     const updatedTask = updateTask(id, data);
     res.status(200).json({ updatedTask });
   } catch (error) {
-    res.status(404).json({ error: error.message }); //404 for not found and other errors from service
+    next(err);
   }
 };
 

@@ -7,7 +7,7 @@ const createTaskController = (req, res) => {
     const task = addTask(title, priority, status);
     res.status(201).json({ task });
   } catch (error) {
-    res.status(400).json({ error: error.message });
+    next(err);
   }
 };
 
