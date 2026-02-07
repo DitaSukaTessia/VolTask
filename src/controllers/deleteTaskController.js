@@ -1,6 +1,6 @@
 import { deleteTask } from "../services/delete.js";
 
-const deleteTaskController = (req, res) => {
+const deleteTaskController = (req, res, next) => {
   try {
     const id = Number(req.params.id);
     if (Number.isNaN(id)) {
@@ -8,10 +8,9 @@ const deleteTaskController = (req, res) => {
     }
 
     const deletedTask = deleteTask(id);
-    res.status(200).json({ deletedTask });
-    res.status(200).json({ message: "Task deleted successfully" });
+    res.status(200).json({ deletedTask, message: "Task deleted successfully" });
   } catch (error) {
-    next(err);
+    next(error);
   }
 };
 

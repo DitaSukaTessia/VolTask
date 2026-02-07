@@ -1,6 +1,6 @@
 import { updateTask } from "../services/update.js";
 
-const updateTaskController = (req, res) => {
+const updateTaskController = (req, res, next) => {
   try {
     const id = Number(req.params.id);
     if (Number.isNaN(id)) {
@@ -12,7 +12,7 @@ const updateTaskController = (req, res) => {
     const updatedTask = updateTask(id, data);
     res.status(200).json({ updatedTask });
   } catch (error) {
-    next(err);
+    next(error);
   }
 };
 

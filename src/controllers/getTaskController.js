@@ -1,15 +1,15 @@
 import { getAllTasks, getTaskById } from "../services/get.js";
 
-const getAllTasksController = (req, res) => {
+const getAllTasksController = (req, res, next) => {
   try {
     const allTasks = getAllTasks();
     res.status(200).json({ allTasks });
   } catch (error) {
-    next(err);
+    next(error);
   }
 };
 
-const getTaskByIdController = (req, res) => {
+const getTaskByIdController = (req, res, next) => {
   try {
     const id = Number(req.params.id);
     if (Number.isNaN(id)) {
@@ -19,7 +19,7 @@ const getTaskByIdController = (req, res) => {
     const task = getTaskById(id);
     res.status(200).json({ task });
   } catch (error) {
-    next(err);
+    next(error);
   }
 };
 
