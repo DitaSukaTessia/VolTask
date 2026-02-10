@@ -1,4 +1,14 @@
+const fs = require("fs");
+
 let tasks = [];
+
+fs.readFile("/data/taskDB.json", "utf8", (err, data) => {
+  if (err) {
+    console.error("Error reading file:", err);
+    return;
+  }
+  tasks = JSON.parse(data);
+});
 
 const addTask = (title, priority, status) => {
   if (!title) {
