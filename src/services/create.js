@@ -1,15 +1,16 @@
-const fs = require("fs");
+import fs from "fs";
 
 let tasks = [];
 
-fs.readFile("/data/taskDB.json", "utf8", (err, data) => {
-  if (err) {
-    console.error("Error reading file:", err);
-    return;
-  }
+// load existing tasks from the JSON file
+try {
+  const data = fs.readFileSync("data/taskDB.json", "utf8");
   tasks = JSON.parse(data);
-});
+} catch (err) {
+  console.error("Error reading tasks from file:", err);
+}
 
+// function to add a new task
 const addTask = (title, priority, status) => {
   if (!title) {
     throw new Error("Title is required");
@@ -31,10 +32,6 @@ const addTask = (title, priority, status) => {
     throw new Error("Invalid status");
   }
 
-  if (status == "done") {
-    status = "done";
-  }
-
   let task = {
     id: tasks.length + 1,
     title: title,
@@ -43,9 +40,9 @@ const addTask = (title, priority, status) => {
     created_at: new Date().toISOString(),
   };
   tasks.push(task);
+
+  fs.writeFileSync("data/taskDB.json", JSON.stringify(tasks, null, 2));
   return task;
 };
-
-console.log(tasks);
 
 export { tasks, addTask };
