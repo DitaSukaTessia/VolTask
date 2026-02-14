@@ -32,8 +32,18 @@ const addTask = (title, priority, status) => {
     throw new Error("Invalid status");
   }
 
+  // id generation logic
+  let maxId = 0;
+  tasks.forEach((task) => {
+    if (task.id > maxId) {
+      maxId = task.id;
+    }
+  });
+
+  const id = maxId + 1;
+
   let task = {
-    id: tasks.length + 1,
+    id: id,
     title: title,
     priority: priority,
     status: status,
