@@ -1,4 +1,5 @@
 import fs from "fs";
+import { validateCreateTask } from "../validators/createTaskValidator.js";
 
 let tasks = [];
 
@@ -11,27 +12,9 @@ try {
 }
 
 // function to add a new task
-const addTask = (title, priority, status) => {
-  if (!title) {
-    throw new Error("Title is required");
-  }
-
-  const priorities = ["low", "medium", "high"];
-  priority = priority ?? "medium";
-  if (!priorities.includes(priority)) {
-    throw new Error("Invalid priority");
-  }
-
-  const statuses = ["pending", "active", "done", "blocked"];
-  status = status ?? "pending";
-  //   if (!status) {
-  //     status = "pending";
-  //   }
-
-  if (!statuses.includes(status)) {
-    throw new Error("Invalid status");
-  }
-
+const addTask = (taskData) => {
+  // validate task data
+  const { title, priority, status } = validateCreateTask(taskData);
   // id generation logic
   let maxId = 0;
   tasks.forEach((task) => {
@@ -42,7 +25,7 @@ const addTask = (title, priority, status) => {
 
   const id = maxId + 1;
 
-  let task = {
+  const task = {
     id: id,
     title: title,
     priority: priority,
