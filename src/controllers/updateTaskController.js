@@ -7,9 +7,9 @@ const updateTaskController = (req, res, next) => {
       return res.status(400).json({ error: "Invalid id" });
     }
 
-    const { title, priority, status } = req.body;
-    const data = { title, priority, status };
-    const updatedTask = updateTask(id, data);
+    // const { title, priority, status } = req.body;
+    // const data = { title, priority, status };
+    const updatedTask = updateTask(id, req.body);
     res.status(200).json({ updatedTask });
   } catch (error) {
     next(error);

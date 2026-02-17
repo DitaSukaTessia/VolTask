@@ -1,3 +1,4 @@
+import fs from "fs";
 import { tasks } from "./create.js";
 import { validateUpdateTask } from "../validators/updateTaskValidator.js";
 
@@ -9,24 +10,39 @@ const updateTask = (taskId, data) => {
     throw error;
   }
 
-  const newTitle = data.title ?? task.title;
-  const newPriority = data.priority ?? task.priority;
-  const newStatus = data.status ?? task.status;
+  // Validate incoming update payload (only fields provided)
+  const updates = validateUpdateTask(data);
 
-  if (newStatus === "done" && task.status === "blocked") {
-    const error = new Error(
-      "Only tasks with status 'pending' or 'active' can be updated",
-    );
-    error.statusCode = 400; // Bad Request
+  // Business rule: only tasks with 'pending' or 'active' status can be updated
+
+  if (Object.prototype.hasOwnProperty.call(updates, "status")) {
+    const allowedTransitions = {
+      pending: ["active", "done", "blocked"],
+      active: ["pending", "active", "done", "blocked"],
+      blocked: ["pending", "active"],
+      done: [], // no transitions allowed from 'done'
+    };
+
+    if (!allowedTransitions[task.status].includes(updates.status)) {
+      const error = new Error(
+        "Only tasks with 'pending' or 'active' status can be updated to the new status",
+      );
+      error.statusCode = 400; // Bad Request
+      throw error;
+    }
+  }
+  Object.assign(task, updates, { updated_at: new Date().toISOString() });
+
+  // Persist changes to disk so in-memory state and file stay in sync
+  try {
+    fs.writeFileSync("data/taskDB.json", JSON.stringify(tasks, null, 2));
+  } catch (err) {
+    const error = new Error("Failed to persist task updates");
+    error.statusCode = 500;
     throw error;
   }
 
-  return Object.assign(task, {
-    title: newTitle,
-    priority: newPriority,
-    status: newStatus,
-    updated_at: new Date().toISOString(),
-  });
+  return task;
 };
 
 export { updateTask };
