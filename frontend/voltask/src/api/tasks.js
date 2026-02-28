@@ -9,8 +9,7 @@ const getTasks = async () => {
     const data = await response.json();
     return data.allTasks;
   } catch (error) {
-    console.error("Error fetching tasks:", error);
-    throw error;
+    throw new Error("Error fetching tasks: " + error.message);
   }
 };
 

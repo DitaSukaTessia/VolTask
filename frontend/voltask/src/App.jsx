@@ -1,5 +1,8 @@
 import { useState, useEffect } from "react";
 import { getTasks } from "./api/tasks";
+import { createTask } from "./api/createTask";
+import TaskList from "./components/TaskList";
+import TaskForm from "./components/TaskForm";
 
 function App() {
   const [tasks, setTasks] = useState([]);
@@ -26,20 +29,20 @@ function App() {
   if (error) {
     return <div>Error: {error}</div>;
   }
+  return (
+    <>
+      <TaskForm onCreate={handleCreate} />
+      <TaskList tasks={tasks} />
+    </>
+  );
 
-  if (tasks.length === 0) {
-    return <div>No tasks found.</div>;
-  } else {
-    return (
-      <div className="app-container">
-        <h1>Tasks</h1>
-        <ul>
-          {tasks.map((task) => (
-            <li key={task.id}>{task.title}</li>
-          ))}
-        </ul>
-      </div>
-    );
+  async function handleCreate(newTaskData) {
+    try {
+      const newTask = await createTask(newTaskData);
+      setTasks((prevTasks) => [...prevTasks, newTask]);
+    } catch (err) {
+      setError(err.message);
+    }
   }
 }
 
