@@ -1,6 +1,8 @@
 import { useState, useEffect } from "react";
 import { getTasks } from "./api/tasks";
 import { createTask } from "./api/createTask";
+import { deleteTask } from "./api/deleteTask";
+import { updateTask } from "./api/updateTask";
 import TaskList from "./components/TaskList";
 import TaskForm from "./components/TaskForm";
 
@@ -32,7 +34,7 @@ function App() {
   return (
     <>
       <TaskForm onCreate={handleCreate} />
-      <TaskList tasks={tasks} />
+      <TaskList tasks={tasks} onDelete={handleDelete} onUpdate={handleUpdate} />
     </>
   );
 
@@ -40,6 +42,26 @@ function App() {
     try {
       const newTask = await createTask(newTaskData);
       setTasks((prevTasks) => [...prevTasks, newTask]);
+    } catch (err) {
+      setError(err.message);
+    }
+  }
+
+  async function handleDelete(taskId) {
+    try {
+      await deleteTask(taskId);
+      setTasks((prevTasks) => prevTasks.filter((task) => task.id !== taskId));
+    } catch (err) {
+      setError(err.message);
+    }
+  }
+
+  async function handleUpdate(taskId, updatedData) {
+    try {
+      const updatedTask = await updateTask(taskId, updatedData);
+      setTasks((prevTasks) =>
+        prevTasks.map((task) => (task.id === taskId ? updatedTask : task)),
+      );
     } catch (err) {
       setError(err.message);
     }
