@@ -13,9 +13,10 @@ const updateTask = async (taskId, updatedData) => {
       throw new Error("Failed to update task");
     }
     const data = await response.json();
+    console.log(data);
     return data.updatedTask;
   } catch (error) {
-    throw new Error("Error updating task: " + error.message);
+    throw new Error(error.message);
   }
 };
 
