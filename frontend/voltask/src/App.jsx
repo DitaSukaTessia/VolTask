@@ -26,10 +26,10 @@ function App() {
   }, []);
 
   if (loading) {
-    return <div>Loading tasks...</div>;
+    return <div className="text-center">Loading tasks...</div>;
   }
   if (error) {
-    return <div>Error: {error}</div>;
+    return <div className="text-red-500">Error: {error}</div>;
   }
   return (
     <>
